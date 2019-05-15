@@ -1,10 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace lab2_web_api.Models
 {
+    public enum TaskImportance
+    {
+        Low,
+        Medium,
+        High
+    }
+
+    public enum TaskState
+    {
+        Open,
+        InProgress,
+        Closed
+    }
+
     public class Task
     {
         public int Id { get; set; }
@@ -13,7 +28,9 @@ namespace lab2_web_api.Models
         public DateTime Added { get; set; }
         public DateTime Deadline { get; set; }
         public DateTime ClosedAt { get; set; }
-        public string Importance { get; set; }
-        public string State { get; set; }
+        [EnumDataType(typeof(TaskImportance))]
+        public TaskImportance Importance { get; set; }
+        [EnumDataType(typeof(TaskState))]
+        public TaskState State { get; set; }
     }
 }

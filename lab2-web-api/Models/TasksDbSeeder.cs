@@ -27,8 +27,8 @@ namespace lab2_web_api.Models
                     Added = new DateTime(2019, 4, 14, 7, 0, 0),
                     Deadline = new DateTime(2019, 9, 14, 7, 0, 0),
                     ClosedAt = new DateTime(2019, 7, 14, 7, 0, 0),
-                    Importance = "high",
-                    State = "in progress"
+                    Importance = TaskImportance.High,
+                    State = TaskState.Closed
 
                 },
                 new Task
@@ -38,8 +38,8 @@ namespace lab2_web_api.Models
                     Added = new DateTime(2019, 4, 14, 7, 0, 0),
                     Deadline = new DateTime(2019, 10, 11, 7, 0, 0),
                     ClosedAt = new DateTime(2019, 8, 1, 7, 0, 0),
-                    Importance = "medium",
-                    State = "in progress"
+                    Importance = TaskImportance.Medium,
+                    State = TaskState.InProgress
                 }
             );
             context.SaveChanges();

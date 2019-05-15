@@ -21,9 +21,24 @@ namespace lab2_web_api.Controllers
 
         // GET: api/Tasks
         [HttpGet]
-        public IEnumerable<Models.Task> Get()
+        public IEnumerable<Models.Task> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            return context.Tasks;
+            IQueryable<Models.Task> result = context.Tasks;
+            if (from == null && to == null)
+            {
+                return result;
+            }
+            if (from != null)
+            {
+                result = result.Where(f => f.Deadline >= from);
+            }
+            if (to != null)
+            {
+                result = result.Where(f => f.Deadline <= to);
+            }
+
+
+            return result;
         }
 
         // GET: api/Tasks/5
