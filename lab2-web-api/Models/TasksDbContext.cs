@@ -12,6 +12,7 @@ namespace lab2_web_api.Models
         {
         }
 
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Taskk> Tasks { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

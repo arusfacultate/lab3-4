@@ -20,7 +20,7 @@ namespace lab2_web_api.Models
         Closed
     }
 
-    public class Task
+    public class Taskk
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -32,5 +32,6 @@ namespace lab2_web_api.Models
         public TaskImportance Importance { get; set; }
         [EnumDataType(typeof(TaskState))]
         public TaskState State { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

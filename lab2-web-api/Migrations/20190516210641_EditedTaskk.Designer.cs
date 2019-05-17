@@ -10,8 +10,8 @@ using lab2_web_api.Models;
 namespace lab2_web_api.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    [Migration("20190514205141_AddImportanceState")]
-    partial class AddImportanceState
+    [Migration("20190516210641_EditedTaskk")]
+    partial class EditedTaskk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,26 @@ namespace lab2_web_api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("lab2_web_api.Taskk", b =>
+            modelBuilder.Entity("lab2_web_api.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Important");
+
+                    b.Property<int?>("TaskkId");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskkId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("lab2_web_api.Models.Taskk", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,6 +63,13 @@ namespace lab2_web_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("lab2_web_api.Models.Comment", b =>
+                {
+                    b.HasOne("lab2_web_api.Models.Taskk")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskkId");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using lab2_web_api.Models;
+using lab2_web_api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,88 +14,95 @@ namespace lab2_web_api.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private TasksDbContext context;
-        public TasksController(TasksDbContext context)
+        private ITaskService taskService;
+
+        public TasksController(ITaskService taskService)
         {
-            this.context = context;
+            this.taskService = taskService;
         }
 
-        // GET: api/Tasks
+        /// <summary>
+        /// Displays the tasks that match a certain Deadline DateTime
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /tasks
+        ///    {
+        ///        "id": 3,
+        ///        "title": "Remove Watermark",
+        ///        "description": "Remove watermark of .net core api",
+        ///        "added": "2019-04-15T07:00:00",
+        ///        "deadline": "2019-09-25T07:00:00",
+        ///        "closedAt": "2019-07-30T07:00:00",
+        ///        "importance": 2,
+        ///        "state": 1
+        ///        "comments": [
+        ///             {
+        ///                 "id": 5,
+        ///                 "text": "sync with prod",
+        ///                 "important": true
+        ///              },
+        ///              {
+        ///                 "id": 6,
+        ///                 "text": "push to bamboo",
+        ///                 "important": false
+        ///             }
+        ///         ]
+        ///     }
+        /// </remarks>
+        /// <param name="from">Optional, The Start Date for Date filter </param>
+        /// <param name="to">Optional, The End Date of the filter</param>
+        /// <returns>A list with all the Tasks available</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response>    
         [HttpGet]
-        public IEnumerable<Models.Task> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IEnumerable<Taskk> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            IQueryable<Models.Task> result = context.Tasks;
-            if (from == null && to == null)
-            {
-                return result;
-            }
-            if (from != null)
-            {
-                result = result.Where(f => f.Deadline >= from);
-            }
-            if (to != null)
-            {
-                result = result.Where(f => f.Deadline <= to);
-            }
-
-
-            return result;
+             return taskService.GetAll(from,to);
         }
 
         // GET: api/Tasks/5
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            var existing = context.Tasks.FirstOrDefault(Task => Task.Id == id);
-            if (existing == null)
+            var found = taskService.GetById(id);
+
+            if (found == null)
             {
                 return NotFound();
             }
 
-            return Ok(existing);
+            return Ok(found);
         }
 
 
         // POST: api/Tasks
         [HttpPost]
-        public void Post([FromBody] Models.Task Task)
+        public void Post([FromBody] Taskk Task)
         {
-            //if (!ModelState.IsValid)
-            //{
-
-            //}
-            context.Tasks.Add(Task);
-            context.SaveChanges();
+            taskService.Create(Task);
         }
 
         // PUT: api/Tasks/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Models.Task Task)
+        public IActionResult Put(int id, [FromBody] Taskk Task)
         {
-            var existing = context.Tasks.AsNoTracking().FirstOrDefault(f => f.Id == id);
-            if (existing == null)
-            {
-                context.Tasks.Add(Task);
-                context.SaveChanges();
-                return Ok(Task);
-            }
-            Task.Id = id;
-            context.Tasks.Update(Task);
-            context.SaveChanges();
-            return Ok(Task);
+            var result = taskService.Upsert(id, Task);
+            return Ok(result);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var existing = context.Tasks.FirstOrDefault(Task => Task.Id == id);
-            if (existing == null)
+            var result = taskService.Delete(id);
+            if (result == null)
             {
                 return NotFound();
             }
-            context.Tasks.Remove(existing);
-            context.SaveChanges();
             return Ok();
         }
     }

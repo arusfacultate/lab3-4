@@ -21,7 +21,7 @@ namespace lab2_web_api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("lab2_web_api.Models.Task", b =>
+            modelBuilder.Entity("lab2_web_api.Taskk", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

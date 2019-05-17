@@ -10,8 +10,8 @@ using lab2_web_api.Models;
 namespace lab2_web_api.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    [Migration("20190514205141_AddImportanceState")]
-    partial class AddImportanceState
+    [Migration("20190515192358_AddCommentsModelAndDbContext")]
+    partial class AddCommentsModelAndDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace lab2_web_api.Migrations
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("lab2_web_api.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Important");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Comments");
+                });
 
             modelBuilder.Entity("lab2_web_api.Taskk", b =>
                 {

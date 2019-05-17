@@ -19,7 +19,7 @@ namespace lab2_web_api.Models
             }
 
             context.Tasks.AddRange(
-                new Task
+                new Taskk
                 {
 
                     Title = "crud implementation",
@@ -31,7 +31,7 @@ namespace lab2_web_api.Models
                     State = TaskState.Closed
 
                 },
-                new Task
+                new Taskk
                 {
                     Title = "data migration ",
                     Description = "migrate data from old structure into the new structure",

@@ -19,7 +19,26 @@ namespace lab2_web_api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("lab2_web_api.Models.Task", b =>
+            modelBuilder.Entity("lab2_web_api.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Important");
+
+                    b.Property<int?>("TaskkId");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskkId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("lab2_web_api.Models.Taskk", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,6 +61,13 @@ namespace lab2_web_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("lab2_web_api.Models.Comment", b =>
+                {
+                    b.HasOne("lab2_web_api.Models.Taskk")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskkId");
                 });
 #pragma warning restore 612, 618
         }
