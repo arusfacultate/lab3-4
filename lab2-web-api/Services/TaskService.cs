@@ -1,4 +1,5 @@
 ﻿using lab2_web_api.Models;
+using lab2_web_api.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace lab2_web_api.Services
 {
     public interface ITaskService
     {
-        IEnumerable<Taskk> GetAll(DateTime? from, DateTime? to);
+        IEnumerable<TaskGetModel> GetAll(DateTime? from, DateTime? to);
         Taskk GetById(int id);
         Taskk Create(Taskk task);
         Taskk Upsert(int id, Taskk task);
@@ -29,14 +30,16 @@ namespace lab2_web_api.Services
             context.SaveChanges();
             return task;
         }
-        public IEnumerable<Taskk> GetAll(DateTime? from, DateTime? to)
+        public IEnumerable<TaskGetModel> GetAll(DateTime? from, DateTime? to)
         {
 
             {
-                IQueryable<Taskk> result = context.Tasks.Include(f => f.Comments);
+                IQueryable<Taskk> result = context
+                    .Tasks
+                    .Include(f => f.Comments);
                 if (from == null && to == null)
                 {
-                    return result;
+                    return result.Select(f => TaskGetModel.FromTask(f));
                 }
                 if (from != null)
                 {
@@ -47,8 +50,7 @@ namespace lab2_web_api.Services
                     result = result.Where(f => f.Deadline <= to);
                 }
 
-
-                return result;
+                return result.Select(f => TaskGetModel.FromTask(f));
             }
 
         }
@@ -72,7 +74,9 @@ namespace lab2_web_api.Services
 
         public Taskk Delete(int id)
         {
-            var existing = context.Tasks.FirstOrDefault(Task => Task.Id == id);
+            var existing = context.Tasks
+                .Include(f => f.Comments)
+                .FirstOrDefault(Task => Task.Id == id);
             if (existing == null)
             {
                 return null;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using lab2_web_api.Models;
 using lab2_web_api.Services;
+using lab2_web_api.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,7 @@ namespace lab2_web_api.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IEnumerable<Taskk> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
+        public IEnumerable<TaskGetModel> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
              return taskService.GetAll(from,to);
         }
