@@ -66,6 +66,22 @@ namespace lab2_web_api.Controllers
         }
 
         // GET: api/Tasks/5
+        /// <summary>
+        /// Get the details of a certain Task based on ID 
+        /// </summary>
+        /// <param name="id">ID of the Task</param>
+        /// <returns>
+        /// {
+        ///"id": 1,
+        ///"title": "crud implementation",
+        ///"description": "Create Crud functionality using .net core api",
+        ///"added": "2019-04-14T07:00:00",
+        ///"deadline": "2019-09-14T07:00:00",
+        ///"closedAt": "2019-07-14T07:00:00",
+        ///"importance": 2,
+        ///"state": 0,
+        ///"comments": []
+        ///}</returns>
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
@@ -81,6 +97,34 @@ namespace lab2_web_api.Controllers
 
 
         // POST: api/Tasks
+        /// <summary>
+        /// Create a TASK 
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /tasks
+        ///        {
+        ///    "title": "Implement the Comments v3",
+        ///    "description": "Implement the Comments for tasks",
+        ///    "added": "2019-04-14T07:00:00",
+        ///    "deadline": "2019-10-01T07:00:00",
+        ///    "closedAt": "2019-07-14T07:00:00",
+        ///    "importance": 2,
+        ///    "state": 0,
+        ///    "comments": [
+        ///    {
+        ///    "text": "sync with prod",
+        ///    "important": true
+        ///    },
+        ///    {
+        ///    "text": "push to bamboo",
+        ///    "important": false
+        ///    }
+        ///    ]
+        ///}
+        /// </remarks>
+        /// <param name="Task">The task that will be created</param>
         [HttpPost]
         public void Post([FromBody] Taskk Task)
         {
@@ -88,6 +132,35 @@ namespace lab2_web_api.Controllers
         }
 
         // PUT: api/Tasks/5
+        /// <summary>
+        /// Update the details of a task. If Status is == 2 then EndDate == current DateTime else DateTime is Null
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /tasks/{id}
+        ///{
+        ///    "title": "Implement the Comments v3",
+        ///    "description": "Implement the Comments for tasks",
+        ///    "added": "2019-04-14T07:00:00",
+        ///    "deadline": "2019-10-01T07:00:00",
+        ///    "importance": 2,
+        ///    "state": 1,
+        ///    "comments": [
+        ///    {
+        ///    "text": "sync with prod",
+        ///    "important": true
+        ///    },
+        ///    {
+        ///    "text": "push to bamboo",
+        ///    "important": false
+        ///    }
+        ///    ]
+        ///}
+        /// </remarks>
+        /// <param name="id">The ID of the task to be updated.</param>
+        /// <param name="Task">The details of the task</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Taskk Task)
         {
@@ -95,6 +168,16 @@ namespace lab2_web_api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Delete a Task
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /tasks/{id}
+        /// </remarks>
+        /// <param name="id">ID of the task to be Deleted</param>
+        /// <returns>Ok or NotFound if the Task doesn't exist.</returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
