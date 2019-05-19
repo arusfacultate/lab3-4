@@ -10,9 +10,9 @@ namespace lab2_web_api.ViewModels
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime Added { get; set; }
-        public DateTime Deadline { get; set; }
-        public DateTime ClosedAt { get; set; }
+        public Nullable<DateTime> Added { get; set; }
+        public Nullable<DateTime> Deadline { get; set; }
+        public Nullable<DateTime> ClosedAt { get; set; }
 
         public static TaskGetModel FromTask(Taskk task)
         {

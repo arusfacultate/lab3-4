@@ -25,9 +25,9 @@ namespace lab2_web_api.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime Added { get; set; }
-        public DateTime Deadline { get; set; }
-        public DateTime ClosedAt { get; set; }
+        public Nullable<DateTime> Added { get; set; }
+        public Nullable<DateTime> Deadline { get; set; }
+        public Nullable<DateTime> ClosedAt { get; set; }
         [EnumDataType(typeof(TaskImportance))]
         public TaskImportance Importance { get; set; }
         [EnumDataType(typeof(TaskState))]

@@ -9,6 +9,7 @@ namespace lab2_web_api.Models
     {
         public int Id { get; set; }
         public string Text { get; set; }
-        public bool Important { get; set; }
+        public bool Important { get; set; }
+
     }
 }

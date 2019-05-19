@@ -66,6 +66,10 @@ namespace lab2_web_api.Services
                 return task;
             }
             task.Id = id;
+            // 3. Modificarea starii unui task, closed => closedAt == time of request
+            // Edited DateTime to Nullable<DateTime>  https://www.dotnetperls.com/nullable-datetime
+            task.ClosedAt = (task.State.Equals(Models.TaskState.Closed)) ? DateTime.Now : (DateTime?)null;
+
             context.Tasks.Update(task);
             context.SaveChanges();
             return task;
