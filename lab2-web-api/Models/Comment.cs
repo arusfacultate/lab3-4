@@ -11,5 +11,8 @@ namespace lab2_web_api.Models
         public string Text { get; set; }
         public bool Important { get; set; }
 
+        public Taskk Task { get; set; }
+
+        public User AddedBy { get; set; }
     }
 }

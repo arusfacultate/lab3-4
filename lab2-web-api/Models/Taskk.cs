@@ -33,5 +33,6 @@ namespace lab2_web_api.Models
         [EnumDataType(typeof(TaskState))]
         public TaskState State { get; set; }
         public List<Comment> Comments { get; set; }
+        public User Owner { get; set; }
     }
 }

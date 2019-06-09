@@ -9,9 +9,9 @@ namespace lab2_web_api.Services
 {
     public interface ITaskService
     {
-        IEnumerable<TaskGetModel> GetAll(DateTime? from, DateTime? to);
+        PaginatedList<TaskGetModel> GetAll(DateTime? from, DateTime? to, int page);
         Taskk GetById(int id);
-        Taskk Create(Taskk task);
+        Taskk Create(TaskPostModel task, User addedBy);
         Taskk Upsert(int id, Taskk task);
         Taskk Delete(int id);
 
@@ -24,38 +24,14 @@ namespace lab2_web_api.Services
             this.context = context;
         }
 
-        public Taskk Create(Taskk task)
+        public Taskk Create(TaskPostModel task, User addedBy)
         {
-            context.Tasks.Add(task);
+            Taskk toAdd = TaskPostModel.ToTask(task);
+            toAdd.Owner = addedBy;
+            context.Tasks.Add(toAdd);
             context.SaveChanges();
-            return task;
+            return toAdd;
         }
-
-        public IEnumerable<TaskGetModel> GetAll(DateTime? from, DateTime? to)
-        {
-
-            {
-                IQueryable<Taskk> result = context
-                    .Tasks
-                    .Include(f => f.Comments);
-                if (from == null && to == null)
-                {
-                    return result.Select(f => TaskGetModel.FromTask(f));
-                }
-                if (from != null)
-                {
-                    result = result.Where(f => f.Deadline >= from);
-                }
-                if (to != null)
-                {
-                    result = result.Where(f => f.Deadline <= to);
-                }
-
-                return result.Select(f => TaskGetModel.FromTask(f));
-            }
-
-        }
-
 
         public Taskk Upsert(int id, Taskk task)
         {
@@ -77,7 +53,6 @@ namespace lab2_web_api.Services
             return task;
         }
 
-
         public Taskk Delete(int id)
         {
             var existing = context.Tasks
@@ -93,11 +68,40 @@ namespace lab2_web_api.Services
             return existing;
         }
 
+
         public Taskk GetById(int id)
         {
             return context.Tasks
                 .Include(f => f.Comments)
                 .FirstOrDefault(f => f.Id == id);
+        }
+
+        public PaginatedList<TaskGetModel> GetAll(DateTime? from, DateTime? to, int page)
+        {
+            IQueryable<Taskk> result = context
+                .Tasks
+                .OrderBy(f => f.Id)
+                .Include(f => f.Comments);
+
+            PaginatedList<TaskGetModel> paginatedResult = new PaginatedList<TaskGetModel>();
+            paginatedResult.CurrentPage = page;
+
+            if (from != null)
+            {
+                result = result.Where(f => f.Deadline >= from);
+            }
+            if (to != null)
+            {
+                result = result.Where(f => f.Deadline <= to);
+            }
+
+            paginatedResult.NumberOfPages = (result.Count() - 1) / PaginatedList<TaskGetModel>.EntriesPerPage + 1;
+            result = result
+                .Skip((page - 1) * PaginatedList<TaskGetModel>.EntriesPerPage)
+                .Take(PaginatedList<TaskGetModel>.EntriesPerPage);
+            paginatedResult.Entries = result.Select(f => TaskGetModel.FromTask(f)).ToList();
+
+            return paginatedResult;
         }
     }
 }

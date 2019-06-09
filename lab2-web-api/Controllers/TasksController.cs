@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using lab2_web_api.Models;
 using lab2_web_api.Services;
 using lab2_web_api.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,12 @@ namespace lab2_web_api.Controllers
     public class TasksController : ControllerBase
     {
         private ITaskService taskService;
+        private IUsersService usersService;
 
-        public TasksController(ITaskService taskService)
+        public TasksController(ITaskService taskService, IUsersService usersService)
         {
             this.taskService = taskService;
+            this.usersService = usersService;
         }
 
         /// <summary>
@@ -54,15 +57,17 @@ namespace lab2_web_api.Controllers
         /// </remarks>
         /// <param name="from">Optional, The Start Date for Date filter </param>
         /// <param name="to">Optional, The End Date of the filter</param>
+        /// <param name="page"></param>
         /// <returns>A list with all the Tasks available</returns>
         /// <response code="201">Returns the newly created item</response>
         /// <response code="400">If the item is null</response>    
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IEnumerable<TaskGetModel> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
+        public PaginatedList<TaskGetModel> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to, [FromQuery]int page = 1)
         {
-             return taskService.GetAll(from,to);
+            page = Math.Max(page, 1);
+            return taskService.GetAll(from,to, page);
         }
 
         // GET: api/Tasks/5
@@ -125,10 +130,14 @@ namespace lab2_web_api.Controllers
         ///}
         /// </remarks>
         /// <param name="Task">The task that will be created</param>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Admin,Regular")]
         [HttpPost]
-        public void Post([FromBody] Taskk Task)
+        public void Post([FromBody] TaskPostModel Task)
         {
-            taskService.Create(Task);
+            User addedBy = usersService.GetCurentUser(HttpContext);
+            taskService.Create(Task, addedBy);
         }
 
         // PUT: api/Tasks/5

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lab2_web_api.Models;
 
 namespace lab2_web_api.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    partial class TasksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190601171352_AddUserAndRegistrationModels2")]
+    partial class AddUserAndRegistrationModels2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,8 +27,6 @@ namespace lab2_web_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddedById");
-
                     b.Property<bool>("Important");
 
                     b.Property<int?>("TaskkId");
@@ -34,8 +34,6 @@ namespace lab2_web_api.Migrations
                     b.Property<string>("Text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddedById");
 
                     b.HasIndex("TaskkId");
 
@@ -81,25 +79,15 @@ namespace lab2_web_api.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<int>("UserRole");
-
                     b.Property<string>("Username");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Username")
-                        .IsUnique()
-                        .HasFilter("[Username] IS NOT NULL");
-
-                    b.ToTable("Users");
+                    b.ToTable("Uerrs");
                 });
 
             modelBuilder.Entity("lab2_web_api.Models.Comment", b =>
                 {
-                    b.HasOne("lab2_web_api.Models.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById");
-
                     b.HasOne("lab2_web_api.Models.Taskk")
                         .WithMany("Comments")
                         .HasForeignKey("TaskkId");
