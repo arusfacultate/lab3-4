@@ -24,5 +24,8 @@ namespace lab2_web_api.Models
 
         [EnumDataType(typeof(UserRole))]
         public UserRole UserRole { get; set; }
+
+        public DateTime DataRegistered { get; set; }
+
     }
 }

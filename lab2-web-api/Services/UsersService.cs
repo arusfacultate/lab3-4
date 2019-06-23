@@ -58,7 +58,8 @@ namespace lab2_web_api.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Username.ToString()),
-                    new Claim(ClaimTypes.Role, user.UserRole.ToString())        //rolul vine ca string
+                    new Claim(ClaimTypes.Role, user.UserRole.ToString()),        //rolul vine ca string
+                    new Claim(ClaimTypes.UserData, user.DataRegistered.ToString())        //DataRegistered vine ca string
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -113,7 +114,9 @@ namespace lab2_web_api.Services
                 FirstName = registerinfo.FirstName,
                 Password = ComputeSha256Hash(registerinfo.Password),
                 Username = registerinfo.Username,
-                UserRole = UserRole.Regular
+                UserRole = UserRole.Regular,
+                DataRegistered = DateTime.Now
+
             });
             context.SaveChanges();
             return Authenticate(registerinfo.Username, registerinfo.Password);
@@ -124,6 +127,8 @@ namespace lab2_web_api.Services
         public User GetCurentUser(HttpContext httpContext)
         {
             string username = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            //string accountType = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.AuthenticationMethod).Value;
+            //return _context.Users.FirstOrDefault(u => u.Username == username && u.AccountType.ToString() == accountType);
 
             return context.Users.FirstOrDefault(u => u.Username == username);
         }
@@ -140,6 +145,7 @@ namespace lab2_web_api.Services
         public UserGetModel GetById(int id)
         {
             User user = context.Users
+                .AsNoTracking()
                 .FirstOrDefault(u => u.Id == id);
 
             return UserGetModel.FromUser(user);
@@ -176,7 +182,8 @@ namespace lab2_web_api.Services
 
         public UserGetModel Delete(int id)
         {
-            var existing = context.Users.FirstOrDefault(u => u.Id == id);
+            var existing = context.Users
+                .FirstOrDefault(u => u.Id == id);
             if (existing == null)
             {
                 return null;
@@ -187,6 +194,9 @@ namespace lab2_web_api.Services
 
             return UserGetModel.FromUser(existing);
         }
+
+
+
 
     }
 }
