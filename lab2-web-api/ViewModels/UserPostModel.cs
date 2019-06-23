@@ -1,6 +1,7 @@
 ﻿using lab2_web_api.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace lab2_web_api.ViewModels
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        [StringLength(100, MinimumLength = 6)]
         public string Password { get; set; }
         public string UserRole { get; set; }
 

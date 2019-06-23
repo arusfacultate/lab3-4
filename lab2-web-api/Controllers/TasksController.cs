@@ -64,6 +64,7 @@ namespace lab2_web_api.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
+        [Authorize(Roles = "Regular,Admin")]
         public PaginatedList<TaskGetModel> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to, [FromQuery]int page = 1)
         {
             page = Math.Max(page, 1);
@@ -88,6 +89,7 @@ namespace lab2_web_api.Controllers
         ///"comments": []
         ///}</returns>
         [HttpGet("{id}", Name = "Get")]
+        [Authorize(Roles = "Regular,Admin")]
         public IActionResult Get(int id)
         {
             var found = taskService.GetById(id);
@@ -108,8 +110,8 @@ namespace lab2_web_api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /tasks
-        ///        {
+        ///   POST /tasks
+        ///    {
         ///    "title": "Implement the Comments v3",
         ///    "description": "Implement the Comments for tasks",
         ///    "added": "2019-04-14T07:00:00",
@@ -127,7 +129,7 @@ namespace lab2_web_api.Controllers
         ///    "important": false
         ///    }
         ///    ]
-        ///}
+        ///    }
         /// </remarks>
         /// <param name="Task">The task that will be created</param>
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -171,6 +173,7 @@ namespace lab2_web_api.Controllers
         /// <param name="Task">The details of the task</param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(Roles = "Regular,Admin")]
         public IActionResult Put(int id, [FromBody] Taskk Task)
         {
             var result = taskService.Upsert(id, Task);
@@ -189,6 +192,7 @@ namespace lab2_web_api.Controllers
         /// <returns>Ok or NotFound if the Task doesn't exist.</returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Regular,Admin")]
         public IActionResult Delete(int id)
         {
             var result = taskService.Delete(id);

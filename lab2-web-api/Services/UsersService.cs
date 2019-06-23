@@ -124,8 +124,6 @@ namespace lab2_web_api.Services
         public User GetCurentUser(HttpContext httpContext)
         {
             string username = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-            //string accountType = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.AuthenticationMethod).Value;
-            //return _context.Users.FirstOrDefault(u => u.Username == username && u.AccountType.ToString() == accountType);
 
             return context.Users.FirstOrDefault(u => u.Username == username);
         }

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab2-web-api", "lab2-web-api\lab2-web-api.csproj", "{892A554F-B0B0-46CB-9E28-4D29E3711003}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab2-web-api", "lab2-web-api\lab2-web-api.csproj", "{892A554F-B0B0-46CB-9E28-4D29E3711003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiTests", "WebApiTests\WebApiTests.csproj", "{09D94805-DDA9-46AD-A0BB-F6C4B6B42A7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{892A554F-B0B0-46CB-9E28-4D29E3711003}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{892A554F-B0B0-46CB-9E28-4D29E3711003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{892A554F-B0B0-46CB-9E28-4D29E3711003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D94805-DDA9-46AD-A0BB-F6C4B6B42A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D94805-DDA9-46AD-A0BB-F6C4B6B42A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D94805-DDA9-46AD-A0BB-F6C4B6B42A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D94805-DDA9-46AD-A0BB-F6C4B6B42A7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
